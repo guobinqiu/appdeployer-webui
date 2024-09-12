@@ -1,6 +1,4 @@
-# vue_shop
-
-[vueshop_backend](https://github.com/guobinqiu/vueshop_backend)
+# Web UI for appdeployer
 
 ## Project setup
 ```

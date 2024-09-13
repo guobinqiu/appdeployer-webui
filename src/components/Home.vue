@@ -50,7 +50,6 @@ export default {
   },
   mounted() {
     this.activePath = window.sessionStorage.getItem('activePath')
-    this.$router.push(this.activePath)
   },
   methods: {
     saveNavState(activePath) {

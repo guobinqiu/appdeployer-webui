@@ -162,23 +162,23 @@
             <div slot="header">
               <span>Quota</span>
             </div>
-            <el-form-item label="cpulimit" prop="kube.deployment.quota._cpulimit">
-              <el-input-number v-model="form.kube.deployment.quota._cpulimit" :min="0"></el-input-number>
-              <span style="margin-left: 15px">(m) = {{ form.kube.deployment.quota._cpulimit ? form.kube.deployment.quota._cpulimit /  1000 : 0 }} cpu cores</span>
+            <el-form-item label="cpulimit" prop="kube.deployment.quota.cpulimit">
+              <el-input-number v-model="form.kube.deployment.quota.cpulimit" :min="0"></el-input-number>
+              <span style="margin-left: 15px">(m) = {{ form.kube.deployment.quota.cpulimit ? form.kube.deployment.quota.cpulimit /  1000 : 0 }} cpu cores</span>
             </el-form-item>
-            <el-form-item label="memlimit" prop="kube.deployment.quota._memlimit.value">
-              <el-input-number v-model="form.kube.deployment.quota._memlimit.value" :min="0"></el-input-number>
-              <el-select v-model="form.kube.deployment.quota._memlimit.unit" style="margin-left: 15px; width: 70px;">
+            <el-form-item label="memlimit" prop="kube.deployment.quota.memlimit.value">
+              <el-input-number v-model="form.kube.deployment.quota.memlimit.value" :min="0"></el-input-number>
+              <el-select v-model="form.kube.deployment.quota.memlimit.unit" style="margin-left: 15px; width: 70px;">
                 <el-option v-for="item in ['Ki', 'Mi', 'Gi']" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="cpurequest" prop="kube.deployment.quota._cpurequest">
-              <el-input-number v-model="form.kube.deployment.quota._cpurequest" :min="0"></el-input-number>
-              <span style="margin-left: 15px">(m) = {{ form.kube.deployment.quota._cpurequest ? form.kube.deployment.quota._cpurequest /  1000 : 0 }} cpu cores</span>
+            <el-form-item label="cpurequest" prop="kube.deployment.quota.cpurequest">
+              <el-input-number v-model="form.kube.deployment.quota.cpurequest" :min="0"></el-input-number>
+              <span style="margin-left: 15px">(m) = {{ form.kube.deployment.quota.cpurequest ? form.kube.deployment.quota.cpurequest /  1000 : 0 }} cpu cores</span>
             </el-form-item>
-            <el-form-item label="memrequest" prop="kube.deployment.quota._memrequest.value">
-              <el-input-number v-model="form.kube.deployment.quota._memrequest.value" :min="0"></el-input-number>
-              <el-select v-model="form.kube.deployment.quota._memrequest.unit" style="margin-left: 15px; width: 70px;">
+            <el-form-item label="memrequest" prop="kube.deployment.quota.memrequest.value">
+              <el-input-number v-model="form.kube.deployment.quota.memrequest.value" :min="0"></el-input-number>
+              <el-select v-model="form.kube.deployment.quota.memrequest.unit" style="margin-left: 15px; width: 70px;">
                 <el-option v-for="item in ['Ki', 'Mi', 'Gi']" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
@@ -281,20 +281,20 @@
             <el-form-item>
               <el-button type="primary" @click="addEnv">增加</el-button>
             </el-form-item>
-            <el-row :gutter="20" v-for="(_, index) in form.kube.deployment._envs" :key = index>
+            <el-row :gutter="20" v-for="(_, index) in form.kube.deployment.envs" :key = index>
               <el-col :span="4">
                 <el-form-item>
                   <el-button type="danger" icon="el-icon-delete" circle @click="removeEnv(index)"></el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item label="key" :prop="`kube.deployment._envs.${index}.key`">
-                  <el-input v-model="form.kube.deployment._envs[index].key"></el-input>
+                <el-form-item label="key" :prop="`kube.deployment.envs.${index}.key`">
+                  <el-input v-model="form.kube.deployment.envs[index].key"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item label="value" :prop="`kube.deployment._envs.${index}.value`">
-                  <el-input v-model="form.kube.deployment._envs[index].value"></el-input>
+                <el-form-item label="value" :prop="`kube.deployment.envs.${index}.value`">
+                  <el-input v-model="form.kube.deployment.envs[index].value"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -369,18 +369,14 @@ export default {
               maxsurge: '1',
               maxunavailable: '0'
             },
-            quota: {
-              cpulimit: '',
-              cpurequest: '',
-              memlimit: '',
-              memrequest: '',
-              _cpulimit: 1000,
-              _cpurequest: 500,
-              _memlimit: {
+            quota: { 
+              cpulimit: 1000,
+              cpurequest: 500,
+              memlimit: {
                 value: 512,
                 unit: 'Mi'
               },
-              _memrequest: {
+              memrequest: {
                 value: 256,
                 unit: 'Mi'
               }
@@ -410,7 +406,6 @@ export default {
               failurethreshold: 3
             },
             envs: [],
-            _envs: []
           }
         }
       }
@@ -499,18 +494,18 @@ export default {
               ]
             },
             quota: {
-              _cpulimit: [
+              cpulimit: [
                 { required: true, message: '请输入pod的cpu上限', trigger: 'blur' }
               ],
-              _memlimit: {
+              memlimit: {
                 value: [
                   { required: true, message: '请输入pod的内存上限', trigger: 'blur' }
                 ]
               },
-              _cpurequest: [
+              cpurequest: [
                 { required: true, message: '请输入pod的cpu下限', trigger: 'blur' }
               ],
-              _memrequest: {
+              memrequest: {
                 value: [
                   { required: true, message: '请输入pod的内存下限', trigger: 'blur' }
                 ]
@@ -532,7 +527,7 @@ export default {
                 { required: this.form.kube.deployment.readinessprobe.type === 'exec', message: '请输入健康检查命令', trigger: 'blur' }
               ]
             },
-            _envs: []
+            envs: []
           }
         }
       }
@@ -566,8 +561,8 @@ export default {
   },
   methods: {
     addEnv() {
-      this.form.kube.deployment._envs.push({ key: '', value: '' })
-      this.formRules.kube.deployment._envs.push(
+      this.form.kube.deployment.envs.push({ key: '', value: '' })
+      this.formRules.kube.deployment.envs.push(
         {
           key: [
             { required: true, message: '请输入Key值', trigger: 'blur' }
@@ -579,34 +574,28 @@ export default {
       )
     },
     removeEnv(index) {
-      this.form.kube.deployment._envs.splice(index, 1)
-      this.formRules.kube.deployment._envs.splice(index, 1)
+      this.form.kube.deployment.envs.splice(index, 1)
+      this.formRules.kube.deployment.envs.splice(index, 1)
     },
     submitForm() {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
-          this.form.kube.deployment._envs.forEach((_env, index) => {
-            this.form.kube.deployment.envs[index] = _env.key.trim() + '=' + _env.value.trim()
-          })
-
-          if (this.form.kube.deployment.quota.cpulimit) {
-            this.form.kube.deployment.quota.cpulimit = this.form.kube.deployment.quota._cpulimit + 'm'
-          } 
-          this.form.kube.deployment.quota.cpurequest = this.form.kube.deployment.quota._cpurequest + 'm'
-          this.form.kube.deployment.quota.memlimit = this.form.kube.deployment.quota._memlimit.value + this.form.kube.deployment.quota._memlimit.unit
-          this.form.kube.deployment.quota.memrequest = this.form.kube.deployment.quota._memrequest.value + this.form.kube.deployment.quota._memrequest.unit
-
           let cloneForm = JSON.parse(JSON.stringify(this.form))
-          delete cloneForm.kube.deployment._envs
-          delete cloneForm.kube.deployment.quota._memlimit
-          delete cloneForm.kube.deployment.quota._memrequest
-
-          console.log('提交成功', cloneForm)          
-
+          this.processForm(cloneForm)
+          console.log('提交成功', cloneForm)
         } else {
           console.log('表单验证失败')
         }
       })
+    },
+    processForm(form) {
+      form.kube.deployment.envs.forEach((env, index) => {
+        form.kube.deployment.envs[index] = env.key.trim() + '=' + env.value.trim()
+      })
+      form.kube.deployment.quota.cpulimit = this.form.kube.deployment.quota.cpulimit + 'm'
+      form.kube.deployment.quota.cpurequest = this.form.kube.deployment.quota.cpurequest + 'm'
+      form.kube.deployment.quota.memlimit = this.form.kube.deployment.quota.memlimit.value + this.form.kube.deployment.quota.memlimit.unit
+      form.kube.deployment.quota.memrequest = this.form.kube.deployment.quota.memrequest.value + this.form.kube.deployment.quota.memrequest.unit
     },
     resetForm() {
       this.$refs.formRef.resetFields()

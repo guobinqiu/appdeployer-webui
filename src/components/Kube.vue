@@ -4,7 +4,9 @@
       <!-- Default Settings -->
       <el-card>
         <div slot="header">
-          <span>Default</span>
+          <el-tooltip effect="dark" content="设置全局属性" placement="top">
+            <span>Default</span>
+          </el-tooltip>
         </div>
         <el-form-item label="appdir" prop="default.appdir">
           <el-input v-model="form.default.appdir"></el-input>
@@ -17,7 +19,9 @@
       <!-- Git Settings -->
       <el-card>
         <div slot="header">
-          <el-checkbox v-model="form.git.enabled"></el-checkbox><span style="margin-left: 10px;">Git</span>
+          <el-tooltip effect="dark" content="是否从Git上拉取代码来进行部署" placement="top">
+            <el-checkbox v-model="form.git.enabled">Git</el-checkbox>
+          </el-tooltip>
         </div>
         <template v-if="form.git.enabled">
           <el-form-item label="repo" prop="git.repo">
@@ -35,14 +39,16 @@
       <!-- Docker Settings -->
       <el-card>
         <div slot="header">
-          <span>Docker</span>
-          <div style="margin-top: 10px">
-            <el-radio-group v-model="dockerMode">
-              <el-radio :label="1">Password mode</el-radio>
-              <el-radio :label="2">Config file mode</el-radio>
-            </el-radio-group>
-          </div>
+          <el-tooltip effect="dark" content="代码编译成镜像后上传Docker" placement="top">
+            <span>Docker</span>
+          </el-tooltip>
         </div>
+        <el-form-item>
+          <el-radio-group v-model="dockerMode">
+            <el-radio :label="1">Password mode</el-radio>
+            <el-radio :label="2">Config file mode</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <template v-if="dockerMode === 1">
           <el-form-item label="dockerconfig" prop="docker.dockerconfig">
             <el-input v-model="form.docker.dockerconfig"></el-input>
@@ -82,7 +88,9 @@
       <!-- Kube Settings -->
       <el-card>
         <div slot="header">
-          <span>Kube</span>
+          <el-tooltip effect="dark" content="从Docker上拉取代码部署到Kubernetes集群" placement="top">
+            <span>Kube</span>
+          </el-tooltip>
         </div>
         <el-form-item label="kubeconfig" prop="kube.kubeconfig">
           <el-input v-model="form.kube.kubeconfig"></el-input>
@@ -94,7 +102,9 @@
         <!-- Ingress Settings -->
         <el-card>
           <div slot="header">
-            <span>Ingress</span>
+            <el-tooltip effect="dark" content="设置入口域名,每个应用对应一个入口域名" placement="top">
+              <span>Ingress</span>
+            </el-tooltip>
           </div>
           <el-form-item label="host" prop="kube.ingress.host">
             <el-input v-model="form.kube.ingress.host"></el-input>
@@ -125,7 +135,9 @@
         <!-- Service Settings -->
         <el-card>
           <div slot="header">
-            <span>Service</span>
+            <el-tooltip effect="dark" content="设置服务端口" placement="top">
+              <span>Service</span>
+            </el-tooltip>
           </div>
           <el-form-item label="port" prop="kube.service.port">
             <el-input-number v-model="form.kube.service.port" :min="0" :max="65535"></el-input-number>
@@ -135,7 +147,9 @@
         <!-- Deployment Settings -->
         <el-card>
           <div slot="header">
-            <span>Deployment</span>
+            <el-tooltip effect="dark" content="管理一组Pod" placement="top">
+              <span>Deployment</span>
+            </el-tooltip>
           </div>
           <el-form-item label="replicas" prop="kube.deployment.replicas">
             <el-input-number v-model="form.kube.deployment.replicas" :min="0"></el-input-number>
@@ -147,7 +161,9 @@
           <!-- Rolling Update Settings -->
           <el-card>
             <div slot="header">
-              <span>Rolling Update</span>
+              <el-tooltip effect="dark" content="设置Pod更新策略保证服务不中断" placement="top">
+                <span>Rolling Update</span>
+              </el-tooltip>
             </div>
             <el-form-item label="maxsurge" prop="kube.deployment.rollingupdate.maxsurge">
               <el-input v-model="form.kube.deployment.rollingupdate.maxsurge"></el-input>
@@ -160,7 +176,9 @@
           <!-- Quota Settings -->
           <el-card>
             <div slot="header">
-              <span>Quota</span>
+              <el-tooltip effect="dark" content="控制容器的cpu和内存占用" placement="top">
+                <span>Quota</span>
+              </el-tooltip>
             </div>
             <el-form-item label="cpulimit" prop="kube.deployment.quota.cpulimit">
               <el-input-number v-model="form.kube.deployment.quota.cpulimit" :min="0"></el-input-number>
@@ -187,10 +205,12 @@
           <!-- Livenessprobe Settings -->
           <el-card>
             <div slot="header">
-              <el-checkbox v-model="form.kube.deployment.livenessprobe.enabled"></el-checkbox><span style="margin-left: 10px;">Liveness Probe</span>
+              <el-tooltip effect="dark" content="是否监测Pod内容器的健康状况" placement="top">
+                <el-checkbox v-model="form.kube.deployment.livenessprobe.enabled">Liveness Probe</el-checkbox>
+              </el-tooltip>
             </div>
             <template v-if="form.kube.deployment.livenessprobe.enabled">
-              <el-form-item label="type">
+              <el-form-item label="type" prop="kube.deployment.livenessprobe.type">
                 <el-select v-model="form.kube.deployment.livenessprobe.type">
                   <el-option v-for="item in ['httpGet', 'exec', 'tcpSocket']" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
@@ -199,7 +219,7 @@
                 <el-form-item label="path" prop="kube.deployment.livenessprobe.path">
                   <el-input v-model="form.kube.deployment.livenessprobe.path"></el-input>
                 </el-form-item>
-                <el-form-item label="scheme">
+                <el-form-item label="scheme" prop="kube.deployment.livenessprobe.scheme">
                   <el-select v-model="form.kube.deployment.livenessprobe.scheme">
                   <el-option v-for="item in ['http', 'https']" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
@@ -210,19 +230,19 @@
                   <el-input v-model="form.kube.deployment.livenessprobe.command"></el-input>
                 </el-form-item>
               </template>
-              <el-form-item label="initialdelayseconds">
+              <el-form-item label="initialdelayseconds" prop="kube.deployment.livenessprobe.initialdelayseconds">
                 <el-input-number v-model="form.kube.deployment.livenessprobe.initialdelayseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="timeoutseconds">
+              <el-form-item label="timeoutseconds" prop="kube.deployment.livenessprobe.timeoutseconds">
                 <el-input-number v-model="form.kube.deployment.livenessprobe.timeoutseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="periodseconds">
+              <el-form-item label="periodseconds" prop="kube.deployment.livenessprobe.periodseconds">
                 <el-input-number v-model="form.kube.deployment.livenessprobe.periodseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="successthreshold">
+              <el-form-item label="successthreshold" prop="kube.deployment.livenessprobe.successthreshold">
                 <el-input-number v-model="form.kube.deployment.livenessprobe.successthreshold" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="failurethreshold">
+              <el-form-item label="failurethreshold" prop="kube.deployment.livenessprobe.failurethreshold">
                 <el-input-number v-model="form.kube.deployment.livenessprobe.failurethreshold" :min="0"></el-input-number>
               </el-form-item>
             </template>
@@ -231,10 +251,12 @@
           <!-- Readinessprobe Settings -->
           <el-card>
             <div slot="header">
-              <el-checkbox v-model="form.kube.deployment.readinessprobe.enabled"></el-checkbox><span style="margin-left: 10px;">Readiness Probe</span>
+              <el-tooltip effect="dark" content="是否监测容器内应用的健康状况" placement="top">
+                <el-checkbox v-model="form.kube.deployment.readinessprobe.enabled">Readiness Probe</el-checkbox>
+              </el-tooltip>
             </div>
             <template v-if="form.kube.deployment.readinessprobe.enabled">
-              <el-form-item label="type">
+              <el-form-item label="type" prop="kube.deployment.readinessprobe.type">
                 <el-select v-model="form.kube.deployment.readinessprobe.type">
                   <el-option v-for="item in ['httpGet', 'exec', 'tcpSocket']" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
@@ -243,7 +265,7 @@
                 <el-form-item label="path" prop="kube.deployment.readinessprobe.path">
                   <el-input v-model="form.kube.deployment.readinessprobe.path"></el-input>
                 </el-form-item>
-                <el-form-item label="scheme">
+                <el-form-item label="scheme" prop="kube.deployment.readinessprobe.scheme">
                   <el-select v-model="form.kube.deployment.readinessprobe.scheme">
                   <el-option v-for="item in ['http', 'https']" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
@@ -254,37 +276,68 @@
                   <el-input v-model="form.kube.deployment.readinessprobe.command"></el-input>
                 </el-form-item>
               </template>
-              <el-form-item label="initialdelayseconds">
+              <el-form-item label="initialdelayseconds" prop="kube.deployment.readinessprobe.initialdelayseconds">
                 <el-input-number v-model="form.kube.deployment.readinessprobe.initialdelayseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="timeoutseconds">
+              <el-form-item label="timeoutseconds" prop="kube.deployment.readinessprobe.timeoutseconds">
                 <el-input-number v-model="form.kube.deployment.readinessprobe.timeoutseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="periodseconds">
+              <el-form-item label="periodseconds" prop="kube.deployment.readinessprobe.periodseconds">
                 <el-input-number v-model="form.kube.deployment.readinessprobe.periodseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="successthreshold">
+              <el-form-item label="successthreshold" prop="kube.deployment.readinessprobe.successthreshold">
                 <el-input-number v-model="form.kube.deployment.readinessprobe.successthreshold" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="failurethreshold">
+              <el-form-item label="failurethreshold" prop="kube.deployment.readinessprobe.failurethreshold">
                 <el-input-number v-model="form.kube.deployment.readinessprobe.failurethreshold" :min="0"></el-input-number>
               </el-form-item>
             </template>
           </el-card>
-          ...
+
+          <!-- Volumemount Settings -->
+          <el-card>
+            <div slot="header">
+              <el-tooltip effect="dark" content="是否挂载一个持久化卷到容器上(如你的应用依赖于sqlite)" placement="top">
+                <el-checkbox v-model="form.kube.deployment.volumemount.enabled">Volume Mount</el-checkbox>
+              </el-tooltip>
+            </div>
+            <template v-if="form.kube.deployment.volumemount.enabled">
+              <el-form-item label="mountpath" prop="kube.deployment.volumemount.mountpath">
+                <el-input v-model="form.kube.deployment.volumemount.mountpath"></el-input>
+              </el-form-item>
+
+              <!-- PVC Settings -->
+              <el-form-item label="accessmode">
+                <el-select v-model="form.kube.deployment.pvc.accessmode" prop="kube.deployment.pvc.accessmode">
+                  <el-option v-for="item in ['ReadWriteOnce', 'ReadOnlyMany', 'ReadWriteMany']" :key="item" :label="item" :value="item"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="storageclassname" prop="kube.deployment.pvc.storageclassname">
+                <el-input v-model="form.kube.deployment.pvc.storageclassname"></el-input>
+              </el-form-item>
+              <el-form-item label="storagesize" prop="kube.deployment.pvc.storagesize.value">
+                <el-input-number v-model="form.kube.deployment.pvc.storagesize.value" :min="0"></el-input-number>
+                <el-select v-model="form.kube.deployment.pvc.storagesize.unit" style="margin-left: 15px; width: 70px;">
+                  <el-option v-for="item in ['Ki', 'Mi', 'Gi']" :key="item" :label="item" :value="item"></el-option>
+                </el-select>
+              </el-form-item>
+            </template>
+          </el-card>
 
           <!-- envs -->
           <el-card>
             <div slot="header">
-              <span>Envs</span>
+              <el-tooltip effect="dark" content="设置容器的环境变量" placement="top">
+                <span>Envs</span>
+              </el-tooltip>
             </div>
             <el-form-item>
-              <el-button type="primary" @click="addEnv">增加</el-button>
+              <el-button type="primary" @click="addEnv" size="mini">+</el-button>
             </el-form-item>
             <el-row :gutter="20" v-for="(_, index) in form.kube.deployment.envs" :key = index>
               <el-col :span="4">
                 <el-form-item>
-                  <el-button type="danger" icon="el-icon-delete" circle @click="removeEnv(index)"></el-button>
+                  <el-button type="danger" size="mini" @click="removeEnv(index)">-</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
@@ -299,7 +352,26 @@
               </el-col>
             </el-row>
           </el-card>
-          ...
+        </el-card>
+
+        <!-- HPA Settings -->
+        <el-card>
+          <div slot="header">
+            <el-tooltip effect="dark" content="配置Pod的水平扩缩容" placement="top">
+              <el-checkbox v-model="form.kube.hpa.enabled">HPA</el-checkbox>
+            </el-tooltip>
+          </div>
+          <template v-if="form.kube.hpa.enabled">
+            <el-form-item label="minreplicas" prop="kube.hpa.minreplicas">
+              <el-input-number v-model="form.kube.hpa.minreplicas" :min="1"></el-input-number>
+            </el-form-item>
+            <el-form-item label="maxreplicas" prop="kube.hpa.maxreplicas">
+              <el-input-number v-model="form.kube.hpa.maxreplicas" :min="form.kube.hpa.minreplicas"></el-input-number>
+            </el-form-item>
+            <el-form-item label="cpurate" prop="kube.hpa.cpurate">
+              <el-input-number v-model="form.kube.hpa.cpurate" :min="0"></el-input-number>
+            </el-form-item>
+          </template>
         </el-card>
       </el-card>
 
@@ -315,18 +387,6 @@
 export default {
   data() {
     return {
-      // [kube]
-      // ; deployment.volumemount.enabled=false
-      // ; deployment.volumemount.mountpath=/app/data
-
-      // ; hpa.enabled=false
-      // ; hpa.minreplicas=1
-      // ; hpa.maxreplicas=10
-      // ; hpa.cpurate=50
-
-      // ; pvc.accessmode=readwriteonce
-      // ; pvc.storageclassname=openebs-hostpath
-      // ; pvc.storagesize=1G
       dockerMode: 1,
       form: {
         default: {
@@ -369,7 +429,7 @@ export default {
               maxsurge: '1',
               maxunavailable: '0'
             },
-            quota: { 
+            quota: {
               cpulimit: 1000,
               cpurequest: 500,
               memlimit: {
@@ -405,7 +465,25 @@ export default {
               successthreshold: 1,
               failurethreshold: 3
             },
-            envs: [],
+            volumemount: {
+              enabled: false,
+              mountpath: '/app/data'
+            },
+            pvc: {
+              accessmode: 'ReadWriteOnce',
+              storageclassname: 'openebs-hostpath',
+              storagesize: {
+                value: 1,
+                unit: 'G'
+              }
+            },
+            envs: []
+          },
+          hpa: {
+            enabled: false,
+            minreplicas: 1,
+            maxreplicas: 10,
+            cpurate: 50
           }
         }
       }
@@ -423,6 +501,7 @@ export default {
           ]
         },
         git: {
+          enabled: [],
           repo: [
             { required: this.form.git.enabled, message: '请输入应用路径', trigger: 'blur' }
           ],
@@ -500,7 +579,8 @@ export default {
               memlimit: {
                 value: [
                   { required: true, message: '请输入pod的内存上限', trigger: 'blur' }
-                ]
+                ],
+                unit: []
               },
               cpurequest: [
                 { required: true, message: '请输入pod的cpu下限', trigger: 'blur' }
@@ -508,26 +588,73 @@ export default {
               memrequest: {
                 value: [
                   { required: true, message: '请输入pod的内存下限', trigger: 'blur' }
-                ]
+                ],
+                unit: []
               }
             },
             livenessprobe: {
+              enabled: [],
+              type: [],
+              scheme: [],
               path: [
                 { required: this.form.kube.deployment.livenessprobe.type === 'httpGet', message: '请输入健康检查路径', trigger: 'blur' }
               ],
               command: [
                 { required: this.form.kube.deployment.livenessprobe.type === 'exec', message: '请输入健康检查命令', trigger: 'blur' }
-              ]
+              ],
+              initialdelayseconds: [],
+              timeoutseconds: [],
+              periodseconds: [],
+              successthreshold: [],
+              failurethreshold: []
             },
             readinessprobe: {
+              enable: [],
+              type: [],
+              scheme: [],
               path: [
                 { required: this.form.kube.deployment.readinessprobe.type === 'httpGet', message: '请输入健康检查路径', trigger: 'blur' }
               ],
               command: [
                 { required: this.form.kube.deployment.readinessprobe.type === 'exec', message: '请输入健康检查命令', trigger: 'blur' }
+              ],
+              initialdelayseconds: [],
+              timeoutseconds: [],
+              periodseconds: [],
+              successthreshold: [],
+              failurethreshold: []
+            },
+            volumemount: {
+              enabled: [],
+              mountpath: [
+                { required: true, message: '请输入挂载路径', trigger: 'blur' }
               ]
             },
-            envs: []
+            pvc: {
+              accessmode: [],
+              storageclassname: [
+                { required: true, message: '请输入三方存储类的名称', trigger: 'blur' }
+              ],
+              storagesize: {
+                value: [
+                  { required: true, message: '请输入pod的内存上限', trigger: 'blur' }
+                ],
+                unit: []
+              }
+            },
+            envs: [] // 动态插入规则
+          },
+          hpa: {
+            enabled: [],
+            minreplicas: [
+              { required: true, message: '请输入最少pod总数', trigger: 'blur' }
+            ],
+            maxreplicas: [
+              { required: true, message: '请输入最大pod总数', trigger: 'blur' }
+            ],
+            cpurate: [
+              { required: true, message: '请输入目标CPU使用率', trigger: 'blur' }
+            ]
           }
         }
       }
@@ -580,7 +707,7 @@ export default {
     submitForm() {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
-          let cloneForm = JSON.parse(JSON.stringify(this.form))
+          const cloneForm = JSON.parse(JSON.stringify(this.form))
           this.processForm(cloneForm)
           console.log('提交成功', cloneForm)
         } else {
@@ -592,10 +719,11 @@ export default {
       form.kube.deployment.envs.forEach((env, index) => {
         form.kube.deployment.envs[index] = env.key.trim() + '=' + env.value.trim()
       })
-      form.kube.deployment.quota.cpulimit = this.form.kube.deployment.quota.cpulimit + 'm'
-      form.kube.deployment.quota.cpurequest = this.form.kube.deployment.quota.cpurequest + 'm'
-      form.kube.deployment.quota.memlimit = this.form.kube.deployment.quota.memlimit.value + this.form.kube.deployment.quota.memlimit.unit
-      form.kube.deployment.quota.memrequest = this.form.kube.deployment.quota.memrequest.value + this.form.kube.deployment.quota.memrequest.unit
+      form.kube.deployment.quota.cpulimit = form.kube.deployment.quota.cpulimit + 'm'
+      form.kube.deployment.quota.cpurequest = form.kube.deployment.quota.cpurequest + 'm'
+      form.kube.deployment.quota.memlimit = form.kube.deployment.quota.memlimit.value + form.kube.deployment.quota.memlimit.unit
+      form.kube.deployment.quota.memrequest = form.kube.deployment.quota.memrequest.value + form.kube.deployment.quota.memrequest.unit
+      form.kube.deployment.pvc.storagesize = form.kube.deployment.pvc.storagesize.value + form.kube.deployment.pvc.storagesize.unit
     },
     resetForm() {
       this.$refs.formRef.resetFields()

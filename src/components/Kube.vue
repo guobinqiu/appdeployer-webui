@@ -144,7 +144,7 @@
             <el-input-number v-model="form.kube.deployment.port" :min="0" :max="65535"></el-input-number>
           </el-form-item>
 
-          <!-- rollingupdate -->
+          <!-- Rolling Update Settings -->
           <el-card>
             <div slot="header">
               <span>Rolling Update</span>
@@ -156,6 +156,121 @@
               <el-input v-model="form.kube.deployment.rollingupdate.maxunavailable"></el-input>
             </el-form-item>
           </el-card>
+
+          <!-- Quota Settings -->
+          <el-card>
+            <div slot="header">
+              <span>Quota</span>
+            </div>
+            <el-form-item label="cpulimit" prop="kube.deployment.quota._cpulimit">
+              <el-input-number v-model="form.kube.deployment.quota._cpulimit" :min="0"></el-input-number>
+              <span style="margin-left: 15px">(m) = {{ form.kube.deployment.quota._cpulimit ? form.kube.deployment.quota._cpulimit /  1000 : 0 }} cpu cores</span>
+            </el-form-item>
+            <el-form-item label="memlimit" prop="kube.deployment.quota._memlimit.value">
+              <el-input-number v-model="form.kube.deployment.quota._memlimit.value" :min="0"></el-input-number>
+              <el-select v-model="form.kube.deployment.quota._memlimit.unit" style="margin-left: 15px; width: 70px;">
+                <el-option v-for="item in ['Ki', 'Mi', 'Gi']" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="cpurequest" prop="kube.deployment.quota._cpurequest">
+              <el-input-number v-model="form.kube.deployment.quota._cpurequest" :min="0"></el-input-number>
+              <span style="margin-left: 15px">(m) = {{ form.kube.deployment.quota._cpurequest ? form.kube.deployment.quota._cpurequest /  1000 : 0 }} cpu cores</span>
+            </el-form-item>
+            <el-form-item label="memrequest" prop="kube.deployment.quota._memrequest.value">
+              <el-input-number v-model="form.kube.deployment.quota._memrequest.value" :min="0"></el-input-number>
+              <el-select v-model="form.kube.deployment.quota._memrequest.unit" style="margin-left: 15px; width: 70px;">
+                <el-option v-for="item in ['Ki', 'Mi', 'Gi']" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-card>
+
+          <!-- Livenessprobe Settings -->
+          <el-card>
+            <div slot="header">
+              <el-checkbox v-model="form.kube.deployment.livenessprobe.enabled"></el-checkbox><span style="margin-left: 10px;">Liveness Probe</span>
+            </div>
+            <template v-if="form.kube.deployment.livenessprobe.enabled">
+              <el-form-item label="type">
+                <el-select v-model="form.kube.deployment.livenessprobe.type">
+                  <el-option v-for="item in ['httpGet', 'exec', 'tcpSocket']" :key="item" :label="item" :value="item"></el-option>
+                </el-select>
+              </el-form-item>
+              <template v-if="form.kube.deployment.livenessprobe.type === 'httpGet'">
+                <el-form-item label="path" prop="kube.deployment.livenessprobe.path">
+                  <el-input v-model="form.kube.deployment.livenessprobe.path"></el-input>
+                </el-form-item>
+                <el-form-item label="scheme">
+                  <el-select v-model="form.kube.deployment.livenessprobe.scheme">
+                  <el-option v-for="item in ['http', 'https']" :key="item" :label="item" :value="item"></el-option>
+                </el-select>
+                </el-form-item>
+                </template>
+              <template v-if="form.kube.deployment.livenessprobe.type === 'exec'">
+                <el-form-item label="command" prop="kube.deployment.livenessprobe.command">
+                  <el-input v-model="form.kube.deployment.livenessprobe.command"></el-input>
+                </el-form-item>
+              </template>
+              <el-form-item label="initialdelayseconds">
+                <el-input-number v-model="form.kube.deployment.livenessprobe.initialdelayseconds" :min="0"></el-input-number>
+              </el-form-item>
+              <el-form-item label="timeoutseconds">
+                <el-input-number v-model="form.kube.deployment.livenessprobe.timeoutseconds" :min="0"></el-input-number>
+              </el-form-item>
+              <el-form-item label="periodseconds">
+                <el-input-number v-model="form.kube.deployment.livenessprobe.periodseconds" :min="0"></el-input-number>
+              </el-form-item>
+              <el-form-item label="successthreshold">
+                <el-input-number v-model="form.kube.deployment.livenessprobe.successthreshold" :min="0"></el-input-number>
+              </el-form-item>
+              <el-form-item label="failurethreshold">
+                <el-input-number v-model="form.kube.deployment.livenessprobe.failurethreshold" :min="0"></el-input-number>
+              </el-form-item>
+            </template>
+          </el-card>
+
+          <!-- Readinessprobe Settings -->
+          <el-card>
+            <div slot="header">
+              <el-checkbox v-model="form.kube.deployment.readinessprobe.enabled"></el-checkbox><span style="margin-left: 10px;">Readiness Probe</span>
+            </div>
+            <template v-if="form.kube.deployment.readinessprobe.enabled">
+              <el-form-item label="type">
+                <el-select v-model="form.kube.deployment.readinessprobe.type">
+                  <el-option v-for="item in ['httpGet', 'exec', 'tcpSocket']" :key="item" :label="item" :value="item"></el-option>
+                </el-select>
+              </el-form-item>
+              <template v-if="form.kube.deployment.readinessprobe.type === 'httpGet'">
+                <el-form-item label="path" prop="kube.deployment.readinessprobe.path">
+                  <el-input v-model="form.kube.deployment.readinessprobe.path"></el-input>
+                </el-form-item>
+                <el-form-item label="scheme">
+                  <el-select v-model="form.kube.deployment.readinessprobe.scheme">
+                  <el-option v-for="item in ['http', 'https']" :key="item" :label="item" :value="item"></el-option>
+                </el-select>
+                </el-form-item>
+                </template>
+              <template v-if="form.kube.deployment.readinessprobe.type === 'exec'">
+                <el-form-item label="command" prop="kube.deployment.readinessprobe.command">
+                  <el-input v-model="form.kube.deployment.readinessprobe.command"></el-input>
+                </el-form-item>
+              </template>
+              <el-form-item label="initialdelayseconds">
+                <el-input-number v-model="form.kube.deployment.readinessprobe.initialdelayseconds" :min="0"></el-input-number>
+              </el-form-item>
+              <el-form-item label="timeoutseconds">
+                <el-input-number v-model="form.kube.deployment.readinessprobe.timeoutseconds" :min="0"></el-input-number>
+              </el-form-item>
+              <el-form-item label="periodseconds">
+                <el-input-number v-model="form.kube.deployment.readinessprobe.periodseconds" :min="0"></el-input-number>
+              </el-form-item>
+              <el-form-item label="successthreshold">
+                <el-input-number v-model="form.kube.deployment.readinessprobe.successthreshold" :min="0"></el-input-number>
+              </el-form-item>
+              <el-form-item label="failurethreshold">
+                <el-input-number v-model="form.kube.deployment.readinessprobe.failurethreshold" :min="0"></el-input-number>
+              </el-form-item>
+            </template>
+          </el-card>
           ...
 
           <!-- envs -->
@@ -166,20 +281,20 @@
             <el-form-item>
               <el-button type="primary" @click="addEnv">增加</el-button>
             </el-form-item>
-            <el-row :gutter="20" v-for="(_, index) in form.kube.deployment.envs" :key = index>
+            <el-row :gutter="20" v-for="(_, index) in form.kube.deployment._envs" :key = index>
               <el-col :span="4">
-                <el-form-item label="">
+                <el-form-item>
                   <el-button type="danger" icon="el-icon-delete" circle @click="removeEnv(index)"></el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item label="key" :prop="`kube.deployment.envs.${index}.key`">
-                  <el-input v-model="form.kube.deployment.envs[index].key"></el-input>
+                <el-form-item label="key" :prop="`kube.deployment._envs.${index}.key`">
+                  <el-input v-model="form.kube.deployment._envs[index].key"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item label="value" :prop="`kube.deployment.envs.${index}.value`">
-                  <el-input v-model="form.kube.deployment.envs[index].value"></el-input>
+                <el-form-item label="value" :prop="`kube.deployment._envs.${index}.value`">
+                  <el-input v-model="form.kube.deployment._envs[index].value"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -201,36 +316,6 @@ export default {
   data() {
     return {
       // [kube]
-      // ; deployment.rollingupdate.maxsurge=1
-      // ; deployment.rollingUpdate.maxunavailable=0
-
-      // ; deployment.quota.cpulimit=1000m
-      // ; deployment.quota.memlimit=512Mi
-      // ; deployment.quota.cpurequst=500m
-      // ; deployment.quota.memrequest=256Mi
-
-      // ; deployment.livenessprobe.enabled=false
-      // ; deployment.livenessprobe.type=httpget
-      // ; deployment.livenessprobe.path=/
-      // ; deployment.livenessprobe.scheme=http
-      // ; deployment.livenessprobe.command=
-      // ; deployment.livenessprobe.initialdelayseconds=0
-      // ; deployment.livenessprobe.timeoutseconds=1
-      // ; deployment.livenessprobe.periodseconds=10
-      // ; deployment.livenessprobe.successthreshold=1
-      // ; deployment.livenessprobe.failurethreshold=3
-
-      // ; deployment.readinessprobe.enabled=false
-      // ; deployment.readinessprobe.type=httpget
-      // ; deployment.readinessprobe.path=/
-      // ; deployment.readinessprobe.scheme=http
-      // ; deployment.readinessprobe.command=
-      // ; deployment.readinessprobe.initialdelayseconds=0
-      // ; deployment.readinessprobe.timeoutseconds=1
-      // ; deployment.readinessprobe.periodseconds=10
-      // ; deployment.readinessprobe.successthreshold=1
-      // ; deployment.readinessprobe.failurethreshold=3
-
       // ; deployment.volumemount.enabled=false
       // ; deployment.volumemount.mountpath=/app/data
 
@@ -284,7 +369,48 @@ export default {
               maxsurge: '1',
               maxunavailable: '0'
             },
-            envs: []
+            quota: {
+              cpulimit: '',
+              cpurequest: '',
+              memlimit: '',
+              memrequest: '',
+              _cpulimit: 1000,
+              _cpurequest: 500,
+              _memlimit: {
+                value: 512,
+                unit: 'Mi'
+              },
+              _memrequest: {
+                value: 256,
+                unit: 'Mi'
+              }
+            },
+            livenessprobe: {
+              enabled: false,
+              type: 'httpGet',
+              path: '/',
+              scheme: 'http',
+              command: '',
+              initialdelayseconds: 0,
+              timeoutseconds: 1,
+              periodseconds: 10,
+              successthreshold: 1,
+              failurethreshold: 3
+            },
+            readinessprobe: {
+              enabled: false,
+              type: 'httpGet',
+              path: '/',
+              scheme: 'http',
+              command: '',
+              initialdelayseconds: 0,
+              timeoutseconds: 1,
+              periodseconds: 10,
+              successthreshold: 1,
+              failurethreshold: 3
+            },
+            envs: [],
+            _envs: []
           }
         }
       }
@@ -357,22 +483,56 @@ export default {
           },
           deployment: {
             replicas: [
-              { required: true, message: '请输入副本数', trigger: 'blur' }
+              { required: true, message: '请输入pod副本数', trigger: 'blur' }
             ],
             port: [
-              { required: true, message: '请输入container端口号', trigger: 'blur' }
+              { required: true, message: '请输入pod端口号', trigger: 'blur' }
             ],
             rollingupdate: {
               maxsurge: [
-                { required: true, message: '请输入maxsurge的个数或百分比', trigger: 'blur' },
+                { required: true, message: '请输入maxsurge的pod个数或百分比', trigger: 'blur' },
                 { validator: this.checkMaxSurge, trigger: 'blur' }
               ],
               maxunavailable: [
-                { required: true, message: '请输入maxunavailable的个数或百分比', trigger: 'blur' },
+                { required: true, message: '请输入maxunavailable的pod个数或百分比', trigger: 'blur' },
                 { validator: this.checkMaxUnavailable, trigger: 'blur' }
               ]
             },
-            envs: []
+            quota: {
+              _cpulimit: [
+                { required: true, message: '请输入pod的cpu上限', trigger: 'blur' }
+              ],
+              _memlimit: {
+                value: [
+                  { required: true, message: '请输入pod的内存上限', trigger: 'blur' }
+                ]
+              },
+              _cpurequest: [
+                { required: true, message: '请输入pod的cpu下限', trigger: 'blur' }
+              ],
+              _memrequest: {
+                value: [
+                  { required: true, message: '请输入pod的内存下限', trigger: 'blur' }
+                ]
+              }
+            },
+            livenessprobe: {
+              path: [
+                { required: this.form.kube.deployment.livenessprobe.type === 'httpGet', message: '请输入健康检查路径', trigger: 'blur' }
+              ],
+              command: [
+                { required: this.form.kube.deployment.livenessprobe.type === 'exec', message: '请输入健康检查命令', trigger: 'blur' }
+              ]
+            },
+            readinessprobe: {
+              path: [
+                { required: this.form.kube.deployment.readinessprobe.type === 'httpGet', message: '请输入健康检查路径', trigger: 'blur' }
+              ],
+              command: [
+                { required: this.form.kube.deployment.readinessprobe.type === 'exec', message: '请输入健康检查命令', trigger: 'blur' }
+              ]
+            },
+            _envs: []
           }
         }
       }
@@ -406,8 +566,8 @@ export default {
   },
   methods: {
     addEnv() {
-      this.form.kube.deployment.envs.push({ key: '', value: '' })
-      this.formRules.kube.deployment.envs.push(
+      this.form.kube.deployment._envs.push({ key: '', value: '' })
+      this.formRules.kube.deployment._envs.push(
         {
           key: [
             { required: true, message: '请输入Key值', trigger: 'blur' }
@@ -419,16 +579,30 @@ export default {
       )
     },
     removeEnv(index) {
-      this.form.kube.deployment.envs.splice(index, 1)
-      this.formRules.kube.deployment.envs.splice(index, 1)
+      this.form.kube.deployment._envs.splice(index, 1)
+      this.formRules.kube.deployment._envs.splice(index, 1)
     },
     submitForm() {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
-          console.log('提交成功', this.form)
-          this.form.kube.deployment.envs.forEach((env, index) => {
-            this.form.kube.deployment.envs[index] = env.key.trim() + '=' + env.value.trim()
+          this.form.kube.deployment._envs.forEach((_env, index) => {
+            this.form.kube.deployment.envs[index] = _env.key.trim() + '=' + _env.value.trim()
           })
+
+          if (this.form.kube.deployment.quota.cpulimit) {
+            this.form.kube.deployment.quota.cpulimit = this.form.kube.deployment.quota._cpulimit + 'm'
+          } 
+          this.form.kube.deployment.quota.cpurequest = this.form.kube.deployment.quota._cpurequest + 'm'
+          this.form.kube.deployment.quota.memlimit = this.form.kube.deployment.quota._memlimit.value + this.form.kube.deployment.quota._memlimit.unit
+          this.form.kube.deployment.quota.memrequest = this.form.kube.deployment.quota._memrequest.value + this.form.kube.deployment.quota._memrequest.unit
+
+          let cloneForm = JSON.parse(JSON.stringify(this.form))
+          delete cloneForm.kube.deployment._envs
+          delete cloneForm.kube.deployment.quota._memlimit
+          delete cloneForm.kube.deployment.quota._memrequest
+
+          console.log('提交成功', cloneForm)          
+
         } else {
           console.log('表单验证失败')
         }

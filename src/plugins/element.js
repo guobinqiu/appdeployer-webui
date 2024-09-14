@@ -27,7 +27,9 @@ import {
   Checkbox,
   Radio,
   RadioGroup,
-  InputNumber
+  InputNumber,
+  Select,
+  Option
 } from 'element-ui'
 
 Vue.use(Button)
@@ -56,6 +58,8 @@ Vue.use(Checkbox)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(InputNumber)
+Vue.use(Select)
+Vue.use(Option)
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

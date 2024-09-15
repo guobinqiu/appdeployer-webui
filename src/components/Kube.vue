@@ -380,6 +380,8 @@
           <el-button type="danger" @click="resetForm">重置</el-button>
         </el-form-item>
     </el-form>
+
+    <textarea v-model="streamData"></textarea>
   </div>
 </template>
 
@@ -388,6 +390,8 @@ export default {
   data() {
     return {
       dockerMode: 1,
+      streamData: '',
+      eventSource: null,
       form: {
         default: {
           appdir: '~/workspace/hellogo',
@@ -705,13 +709,13 @@ export default {
       this.formRules.kube.deployment.envs.splice(index, 1)
     },
     submitForm() {
-      this.$refs.formRef.validate((valid) => {
+      this.streamData = ''
+      this.$refs.formRef.validate(async valid => {
         if (valid) {
           const cloneForm = JSON.parse(JSON.stringify(this.form))
           this.processForm(cloneForm)
-          console.log('提交成功', cloneForm)
-        } else {
-          console.log('表单验证失败')
+          const { data: res } = await this.$http.post('http://localhost:8888/kube/submit', cloneForm)
+          this.startStream(res.requestID)
         }
       })
     },
@@ -749,7 +753,22 @@ export default {
         return cb(new Error('请输入合法的maxunavailable值'))
       }
       cb()
+    },
+    startStream(requestID) {
+      if (this.isStreamEnded) return
+      this.eventSource = new EventSource('http://localhost:8888/kube/deploy?requestID=' + requestID)
+
+      this.eventSource.onmessage = (event) => {
+        this.streamData += event.data + '\n'
+      }
+      this.eventSource.onerror = (error) => {
+        console.log('EventSource failed: ', error)
+        this.eventSource.close()
+      }
     }
+  },
+  beforeDestroy() {
+    this.eventSource.close()
   }
 }
 </script>

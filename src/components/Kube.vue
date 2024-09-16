@@ -755,7 +755,6 @@ export default {
       cb()
     },
     startStream(requestID) {
-      if (this.isStreamEnded) return
       this.eventSource = new EventSource('http://localhost:8888/kube/deploy?requestID=' + requestID)
 
       this.eventSource.onmessage = (event) => {
@@ -768,7 +767,9 @@ export default {
     }
   },
   beforeDestroy() {
-    this.eventSource.close()
+    if (this.eventSource) {
+      this.eventSource.close()
+    }
   }
 }
 </script>

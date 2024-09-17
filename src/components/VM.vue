@@ -84,6 +84,7 @@
       <el-form-item>
           <el-button type="primary" @click="submitForm">提交</el-button>
           <el-button type="danger" @click="resetForm">重置</el-button>
+          <el-button type="warning" @click="streamData = ''">清空</el-button>
       </el-form-item>
     </el-form>
     <textarea v-model="streamData"></textarea>
@@ -200,7 +201,6 @@ export default {
   },
   methods: {
     submitForm() {
-      this.streamData = ''
       this.$refs.formRef.validate(async valid => {
         if (valid) {
           try {

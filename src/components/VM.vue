@@ -203,8 +203,12 @@ export default {
       this.streamData = ''
       this.$refs.formRef.validate(async valid => {
         if (valid) {
-          const { data: res } = await this.$http.post('http://localhost:8888/vm/submit', this.form)
-          this.startStream(res.requestID)
+          try {
+            const { data: res } = await this.$http.post('http://localhost:8888/vm/submit', this.form)
+            this.startStream(res.requestID)
+          } catch (err) {
+            this.streamData += err + '\n'
+          }
         }
       })
     },
@@ -219,13 +223,18 @@ export default {
       }
       this.eventSource.onerror = (error) => {
         console.log('EventSource failed: ', error)
-        this.eventSource.close()
+        this.streamData += 'EventSource failed\n'
+        if (this.eventSource) {
+          this.eventSource.close()
+          this.eventSource = null
+        }
       }
     }
   },
   beforeDestroy() {
     if (this.eventSource) {
       this.eventSource.close()
+      this.eventSource = null
     }
   }
 }

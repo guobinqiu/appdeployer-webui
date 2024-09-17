@@ -378,6 +378,7 @@
       <el-form-item>
           <el-button type="primary" @click="submitForm">提交</el-button>
           <el-button type="danger" @click="resetForm">重置</el-button>
+          <el-button type="warning" @click="streamData = ''">清空</el-button>
         </el-form-item>
     </el-form>
 
@@ -709,13 +710,16 @@ export default {
       this.formRules.kube.deployment.envs.splice(index, 1)
     },
     submitForm() {
-      this.streamData = ''
       this.$refs.formRef.validate(async valid => {
         if (valid) {
           const cloneForm = JSON.parse(JSON.stringify(this.form))
           this.processForm(cloneForm)
-          const { data: res } = await this.$http.post('http://localhost:8888/kube/submit', cloneForm)
-          this.startStream(res.requestID)
+          try {
+            const { data: res } = await this.$http.post('http://localhost:8888/kube/submit', cloneForm)
+            this.startStream(res.requestID)
+          } catch(err) {
+            this.streamData += err + '\n'
+          }
         }
       })
     },
@@ -732,7 +736,29 @@ export default {
     resetForm() {
       this.$refs.formRef.resetFields()
     },
-    checkMaxSurge(rule, value, cb) {
+    startStream(requestID) {
+      this.eventSource = new EventSource('http://localhost:8888/kube/deploy?requestID=' + requestID)
+
+      this.eventSource.onmessage = (event) => {
+        this.streamData += event.data + '\n'
+      }
+      this.eventSource.onerror = (error) => {
+        console.log('EventSource failed: ', error)
+        this.streamData += 'EventSource failed\n'
+        if (this.eventSource) {
+          this.eventSource.close()
+          this.eventSource = null
+        }
+      }
+    }
+  },
+  beforeDestroy() {
+    if (this.eventSource) {
+      this.eventSource.close()
+      this.eventSource = null
+    }
+  },
+  checkMaxSurge(rule, value, cb) {
       const strValue = String(value)
       if (strValue.endsWith('%')) {
         value = strValue.slice(0, -1)
@@ -753,23 +779,6 @@ export default {
         return cb(new Error('请输入合法的maxunavailable值'))
       }
       cb()
-    },
-    startStream(requestID) {
-      this.eventSource = new EventSource('http://localhost:8888/kube/deploy?requestID=' + requestID)
-
-      this.eventSource.onmessage = (event) => {
-        this.streamData += event.data + '\n'
-      }
-      this.eventSource.onerror = (error) => {
-        console.log('EventSource failed: ', error)
-        this.eventSource.close()
-      }
     }
-  },
-  beforeDestroy() {
-    if (this.eventSource) {
-      this.eventSource.close()
-    }
-  }
 }
 </script>

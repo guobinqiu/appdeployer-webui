@@ -334,7 +334,7 @@
             <el-form-item>
               <el-button type="primary" @click="addEnv" size="mini">+</el-button>
             </el-form-item>
-            <el-row :gutter="20" v-for="(_, index) in form.kube.deployment.envs" :key = index>
+            <el-row :gutter="20" v-for="(_, index) in form.kube.deployment.envs" :key=index>
               <el-col :span="4">
                 <el-form-item>
                   <el-button type="danger" size="mini" @click="removeEnv(index)">-</el-button>
@@ -712,12 +712,13 @@ export default {
     submitForm() {
       this.$refs.formRef.validate(async valid => {
         if (valid) {
-          const cloneForm = JSON.parse(JSON.stringify(this.form))
-          this.processForm(cloneForm)
           try {
+            const cloneForm = JSON.parse(JSON.stringify(this.form))
+            this.processForm(cloneForm)
+            // console.log(cloneForm)
             const { data: res } = await this.$http.post('http://localhost:8888/kube/submit', cloneForm)
             this.startStream(res.requestID)
-          } catch(err) {
+          } catch (err) {
             this.streamData += err + '\n'
           }
         }
@@ -759,26 +760,26 @@ export default {
     }
   },
   checkMaxSurge(rule, value, cb) {
-      const strValue = String(value)
-      if (strValue.endsWith('%')) {
-        value = strValue.slice(0, -1)
-      }
-      const numValue = Number(value)
-      if (isNaN(numValue) || numValue < 1) {
-        return cb(new Error('请输入合法的maxsurge值'))
-      }
-      cb()
-    },
-    checkMaxUnavailable(rule, value, cb) {
-      const strValue = String(value)
-      if (strValue.endsWith('%')) {
-        value = strValue.slice(0, -1)
-      }
-      const numValue = Number(value)
-      if (isNaN(numValue) || numValue < 0 || numValue >= this.form.kube.deployment.replicas) {
-        return cb(new Error('请输入合法的maxunavailable值'))
-      }
-      cb()
+    const strValue = String(value)
+    if (strValue.endsWith('%')) {
+      value = strValue.slice(0, -1)
     }
+    const numValue = Number(value)
+    if (isNaN(numValue) || numValue < 1) {
+      return cb(new Error('请输入合法的maxsurge值'))
+    }
+    cb()
+  },
+  checkMaxUnavailable(rule, value, cb) {
+    const strValue = String(value)
+    if (strValue.endsWith('%')) {
+      value = strValue.slice(0, -1)
+    }
+    const numValue = Number(value)
+    if (isNaN(numValue) || numValue < 0 || numValue >= this.form.kube.deployment.replicas) {
+      return cb(new Error('请输入合法的maxunavailable值'))
+    }
+    cb()
+  }
 }
 </script>

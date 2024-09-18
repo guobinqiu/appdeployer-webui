@@ -66,9 +66,22 @@
 
       <!-- ansible -->
       <el-card>
-        <el-form-item label="hosts" prop="ansible.hosts">
-          <el-input v-model="form.ansible.hosts"></el-input>
+        <el-form-item label="hosts">
+          <el-button type="primary" @click="addHost" size="mini">+</el-button>
         </el-form-item>
+        <el-row :gutter="20" v-for="(_, index) in form.ansible.hosts" :key=index>
+          <el-col :span="4">
+            <el-form-item>
+              <el-button type="danger" size="mini" @click="removeHost(index)">-</el-button>
+            </el-form-item>
+          </el-col>
+          <el-col :span="20">
+            <el-form-item label="host" :prop="`ansible.hosts.${index}.value`">
+              <el-input v-model="form.ansible.hosts[index].value"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-form-item label="role" prop="ansible.role">
           <el-select v-model="form.ansible.role">
             <el-option v-for="item in ['go', 'java', 'nodejs']" :key="item" :label="item" :value="item"></el-option>
@@ -119,7 +132,7 @@ export default {
           stricthostkeychecking: false
         },
         ansible: {
-          hosts: 'localhost',
+          hosts: [{ value: '' }],
           role: '',
           become_password: '',
           installdir: '~/workspace'
@@ -176,7 +189,11 @@ export default {
         },
         ansible: {
           hosts: [
-            { required: true, message: '请输入ansible受控机列表(多主机用逗号分隔,支持通配符)', trigger: 'blur' }
+            {
+              value: [
+                { required: true, message: '请输入ansible受控机列表(多主机用逗号分隔,支持通配符)', trigger: 'blur' }
+              ]
+            }
           ],
           role: [
             { required: true, message: '请输入发布的应用类型', trigger: 'change' }
@@ -204,13 +221,19 @@ export default {
       this.$refs.formRef.validate(async valid => {
         if (valid) {
           try {
-            const { data: res } = await this.$http.post('http://localhost:8888/vm/submit', this.form)
+            const cloneForm = JSON.parse(JSON.stringify(this.form))
+            this.processForm(cloneForm)
+            // console.log(cloneForm)
+            const { data: res } = await this.$http.post('http://localhost:8888/vm/submit', cloneForm)
             this.startStream(res.requestID)
           } catch (err) {
             this.streamData += err + '\n'
           }
         }
       })
+    },
+    processForm(form) {
+      form.ansible.hosts = form.ansible.hosts.map(host => host.value.trim()).join(',')
     },
     resetForm() {
       this.$refs.formRef.resetFields()
@@ -228,6 +251,20 @@ export default {
           this.eventSource.close()
           this.eventSource = null
         }
+      }
+    },
+    addHost() {
+      this.form.ansible.hosts.push({ value: '' })
+      this.formRules.ansible.hosts.push({
+        value: [
+          { required: true, message: '请输入ansible受控机列表(多主机用逗号分隔,支持通配符)', trigger: 'blur' }
+        ]
+      })
+    },
+    removeHost(index) {
+      if (this.form.ansible.hosts.length > 1) {
+        this.form.ansible.hosts.splice(index, 1)
+        this.formRules.ansible.hosts.splice(index, 1)
       }
     }
   },

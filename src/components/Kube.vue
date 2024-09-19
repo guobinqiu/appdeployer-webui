@@ -8,10 +8,10 @@
             <span>Default</span>
           </el-tooltip>
         </div>
-        <el-form-item label="appdir" prop="default.appdir">
+        <el-form-item label="Appdir" prop="default.appdir">
           <el-input v-model="form.default.appdir"></el-input>
         </el-form-item>
-        <el-form-item label="appname" prop="default.appname">
+        <el-form-item label="Appname" prop="default.appname">
           <el-input v-model="form.default.appname"></el-input>
         </el-form-item>
       </el-card>
@@ -24,13 +24,13 @@
           </el-tooltip>
         </div>
         <template v-if="form.git.enabled">
-          <el-form-item label="repo" prop="git.repo">
+          <el-form-item label="Repo" prop="git.repo">
             <el-input v-model="form.git.repo"></el-input>
           </el-form-item>
-          <el-form-item label="username" prop="git.username">
+          <el-form-item label="Username" prop="git.username">
             <el-input v-model="form.git.username"></el-input>
           </el-form-item>
-          <el-form-item label="password" prop="git.password">
+          <el-form-item label="Password" prop="git.password">
             <el-input v-model="form.git.password"></el-input>
           </el-form-item>
         </template>
@@ -50,36 +50,36 @@
           </el-radio-group>
         </el-form-item>
         <template v-if="dockerMode === 1">
-          <el-form-item label="dockerconfig" prop="docker.dockerconfig">
+          <el-form-item label="DockerConfig" prop="docker.dockerconfig">
             <el-input v-model="form.docker.dockerconfig"></el-input>
           </el-form-item>
-          <el-form-item label="dockerfile" prop="docker.dockerfile">
+          <el-form-item label="Dockerfile" prop="docker.dockerfile">
             <el-input v-model="form.docker.dockerfile"></el-input>
           </el-form-item>
-          <el-form-item label="repository" prop="docker.repository">
+          <el-form-item label="Repository" prop="docker.repository">
             <el-input v-model="form.docker.repository"></el-input>
           </el-form-item>
-          <el-form-item label="tag" prop="docker.tag">
+          <el-form-item label="Tag" prop="docker.tag">
             <el-input v-model="form.docker.tag"></el-input>
           </el-form-item>
         </template>
         <template v-else-if="dockerMode === 2">
-          <el-form-item label="registry" prop="docker.registry">
+          <el-form-item label="Registry" prop="docker.registry">
             <el-input v-model="form.docker.registry"></el-input>
           </el-form-item>
-          <el-form-item label="username" prop="docker.username">
+          <el-form-item label="Username" prop="docker.username">
             <el-input v-model="form.docker.username"></el-input>
           </el-form-item>
-          <el-form-item label="password" prop="docker.password">
+          <el-form-item label="Password" prop="docker.password">
             <el-input v-model="form.docker.password"></el-input>
           </el-form-item>
-          <el-form-item label="dockerfile" prop="docker.dockerfile">
+          <el-form-item label="Dockerfile" prop="docker.dockerfile">
             <el-input v-model="form.docker.dockerfile"></el-input>
           </el-form-item>
-          <el-form-item label="repository" prop="docker.repository">
+          <el-form-item label="Repository" prop="docker.repository">
             <el-input v-model="form.docker.repository"></el-input>
           </el-form-item>
-          <el-form-item label="tag" prop="docker.tag">
+          <el-form-item label="Tag" prop="docker.tag">
             <el-input v-model="form.docker.tag"></el-input>
           </el-form-item>
         </template>
@@ -92,10 +92,10 @@
             <span>Kube</span>
           </el-tooltip>
         </div>
-        <el-form-item label="kubeconfig" prop="kube.kubeconfig">
+        <el-form-item label="KubeConfig" prop="kube.kubeconfig">
           <el-input v-model="form.kube.kubeconfig"></el-input>
         </el-form-item>
-        <el-form-item label="namespace" prop="kube.namespace">
+        <el-form-item label="Namespace" prop="kube.namespace">
           <el-input v-model="form.kube.namespace"></el-input>
         </el-form-item>
 
@@ -106,26 +106,26 @@
               <span>Ingress</span>
             </el-tooltip>
           </div>
-          <el-form-item label="host" prop="kube.ingress.host">
+          <el-form-item label="Host" prop="kube.ingress.host">
             <el-input v-model="form.kube.ingress.host"></el-input>
           </el-form-item>
-          <el-form-item label="tls" prop="kube.ingress.tls">
+          <el-form-item label="TLS" prop="kube.ingress.tls">
             <el-checkbox v-model="form.kube.ingress.tls"></el-checkbox>
           </el-form-item>
           <template v-if="form.kube.ingress.tls">
-            <el-form-item label="selfsigned" prop="kube.ingress.selfsigned">
+            <el-form-item label="Self Signed" prop="kube.ingress.selfsigned">
               <el-checkbox v-model="form.kube.ingress.selfsigned"></el-checkbox>
             </el-form-item>
             <template v-if="form.kube.ingress.selfsigned">
-              <el-form-item label="selfsignedyears" prop="kube.ingress.selfsignedyears">
+              <el-form-item label="Self Signed Years" prop="kube.ingress.selfsignedyears">
                 <el-input-number v-model="form.kube.ingress.selfsignedyears" :min="1" :max="10"></el-input-number>
               </el-form-item>
             </template>
             <template v-else>
-              <el-form-item label="keypath" prop="kube.ingress.keypath">
+              <el-form-item label="PEM .key Path" prop="kube.ingress.keypath">
                 <el-input v-model="form.kube.ingress.keypath"></el-input>
               </el-form-item>
-              <el-form-item label="crtpath" prop="kube.ingress.crtpath">
+              <el-form-item label="PEM .crt Path" prop="kube.ingress.crtpath">
                 <el-input v-model="form.kube.ingress.crtpath"></el-input>
               </el-form-item>
             </template>
@@ -139,7 +139,7 @@
               <span>Service</span>
             </el-tooltip>
           </div>
-          <el-form-item label="port" prop="kube.service.port">
+          <el-form-item label="Port" prop="kube.service.port">
             <el-input-number v-model="form.kube.service.port" :min="0" :max="65535"></el-input-number>
           </el-form-item>
         </el-card>
@@ -151,10 +151,10 @@
               <span>Deployment</span>
             </el-tooltip>
           </div>
-          <el-form-item label="replicas" prop="kube.deployment.replicas">
+          <el-form-item label="Replicas" prop="kube.deployment.replicas">
             <el-input-number v-model="form.kube.deployment.replicas" :min="0"></el-input-number>
           </el-form-item>
-          <el-form-item label="port" prop="kube.deployment.port">
+          <el-form-item label="Port" prop="kube.deployment.port">
             <el-input-number v-model="form.kube.deployment.port" :min="0" :max="65535"></el-input-number>
           </el-form-item>
 
@@ -165,10 +165,10 @@
                 <span>Rolling Update</span>
               </el-tooltip>
             </div>
-            <el-form-item label="maxsurge" prop="kube.deployment.rollingupdate.maxsurge">
+            <el-form-item label="Max Surge" prop="kube.deployment.rollingupdate.maxsurge">
               <el-input v-model="form.kube.deployment.rollingupdate.maxsurge"></el-input>
             </el-form-item>
-            <el-form-item label="maxunavailable" prop="kube.deployment.rollingupdate.maxunavailable">
+            <el-form-item label="Max Unavailable" prop="kube.deployment.rollingupdate.maxunavailable">
               <el-input v-model="form.kube.deployment.rollingupdate.maxunavailable"></el-input>
             </el-form-item>
           </el-card>
@@ -180,21 +180,21 @@
                 <span>Quota</span>
               </el-tooltip>
             </div>
-            <el-form-item label="cpulimit" prop="kube.deployment.quota.cpulimit">
+            <el-form-item label="CPU Limit" prop="kube.deployment.quota.cpulimit">
               <el-input-number v-model="form.kube.deployment.quota.cpulimit" :min="0"></el-input-number>
               <span style="margin-left: 15px">(m) = {{ form.kube.deployment.quota.cpulimit ? form.kube.deployment.quota.cpulimit /  1000 : 0 }} cpu cores</span>
             </el-form-item>
-            <el-form-item label="memlimit" prop="kube.deployment.quota.memlimit.value">
+            <el-form-item label="Memory Limit" prop="kube.deployment.quota.memlimit.value">
               <el-input-number v-model="form.kube.deployment.quota.memlimit.value" :min="0"></el-input-number>
               <el-select v-model="form.kube.deployment.quota.memlimit.unit" style="margin-left: 15px; width: 70px;">
                 <el-option v-for="item in ['Ki', 'Mi', 'Gi']" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="cpurequest" prop="kube.deployment.quota.cpurequest">
+            <el-form-item label="CPU Request" prop="kube.deployment.quota.cpurequest">
               <el-input-number v-model="form.kube.deployment.quota.cpurequest" :min="0"></el-input-number>
               <span style="margin-left: 15px">(m) = {{ form.kube.deployment.quota.cpurequest ? form.kube.deployment.quota.cpurequest /  1000 : 0 }} cpu cores</span>
             </el-form-item>
-            <el-form-item label="memrequest" prop="kube.deployment.quota.memrequest.value">
+            <el-form-item label="Memory Request" prop="kube.deployment.quota.memrequest.value">
               <el-input-number v-model="form.kube.deployment.quota.memrequest.value" :min="0"></el-input-number>
               <el-select v-model="form.kube.deployment.quota.memrequest.unit" style="margin-left: 15px; width: 70px;">
                 <el-option v-for="item in ['Ki', 'Mi', 'Gi']" :key="item" :label="item" :value="item"></el-option>
@@ -210,39 +210,39 @@
               </el-tooltip>
             </div>
             <template v-if="form.kube.deployment.livenessprobe.enabled">
-              <el-form-item label="type" prop="kube.deployment.livenessprobe.type">
+              <el-form-item label="Type" prop="kube.deployment.livenessprobe.type">
                 <el-select v-model="form.kube.deployment.livenessprobe.type">
                   <el-option v-for="item in ['httpGet', 'exec', 'tcpSocket']" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </el-form-item>
               <template v-if="form.kube.deployment.livenessprobe.type === 'httpGet'">
-                <el-form-item label="path" prop="kube.deployment.livenessprobe.path">
+                <el-form-item label="Path" prop="kube.deployment.livenessprobe.path">
                   <el-input v-model="form.kube.deployment.livenessprobe.path"></el-input>
                 </el-form-item>
-                <el-form-item label="scheme" prop="kube.deployment.livenessprobe.scheme">
+                <el-form-item label="Scheme" prop="kube.deployment.livenessprobe.scheme">
                   <el-select v-model="form.kube.deployment.livenessprobe.scheme">
                   <el-option v-for="item in ['http', 'https']" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
                 </el-form-item>
                 </template>
               <template v-if="form.kube.deployment.livenessprobe.type === 'exec'">
-                <el-form-item label="command" prop="kube.deployment.livenessprobe.command">
+                <el-form-item label="Command" prop="kube.deployment.livenessprobe.command">
                   <el-input v-model="form.kube.deployment.livenessprobe.command"></el-input>
                 </el-form-item>
               </template>
-              <el-form-item label="initialdelayseconds" prop="kube.deployment.livenessprobe.initialdelayseconds">
+              <el-form-item label="InitialDelaySeconds" prop="kube.deployment.livenessprobe.initialdelayseconds">
                 <el-input-number v-model="form.kube.deployment.livenessprobe.initialdelayseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="timeoutseconds" prop="kube.deployment.livenessprobe.timeoutseconds">
+              <el-form-item label="TimeoutSeconds" prop="kube.deployment.livenessprobe.timeoutseconds">
                 <el-input-number v-model="form.kube.deployment.livenessprobe.timeoutseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="periodseconds" prop="kube.deployment.livenessprobe.periodseconds">
+              <el-form-item label="PeriodSeconds" prop="kube.deployment.livenessprobe.periodseconds">
                 <el-input-number v-model="form.kube.deployment.livenessprobe.periodseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="successthreshold" prop="kube.deployment.livenessprobe.successthreshold">
+              <el-form-item label="SuccessThreshold" prop="kube.deployment.livenessprobe.successthreshold">
                 <el-input-number v-model="form.kube.deployment.livenessprobe.successthreshold" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="failurethreshold" prop="kube.deployment.livenessprobe.failurethreshold">
+              <el-form-item label="FailureThreshold" prop="kube.deployment.livenessprobe.failurethreshold">
                 <el-input-number v-model="form.kube.deployment.livenessprobe.failurethreshold" :min="0"></el-input-number>
               </el-form-item>
             </template>
@@ -256,39 +256,39 @@
               </el-tooltip>
             </div>
             <template v-if="form.kube.deployment.readinessprobe.enabled">
-              <el-form-item label="type" prop="kube.deployment.readinessprobe.type">
+              <el-form-item label="Type" prop="kube.deployment.readinessprobe.type">
                 <el-select v-model="form.kube.deployment.readinessprobe.type">
                   <el-option v-for="item in ['httpGet', 'exec', 'tcpSocket']" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </el-form-item>
               <template v-if="form.kube.deployment.readinessprobe.type === 'httpGet'">
-                <el-form-item label="path" prop="kube.deployment.readinessprobe.path">
+                <el-form-item label="Path" prop="kube.deployment.readinessprobe.path">
                   <el-input v-model="form.kube.deployment.readinessprobe.path"></el-input>
                 </el-form-item>
-                <el-form-item label="scheme" prop="kube.deployment.readinessprobe.scheme">
+                <el-form-item label="Scheme" prop="kube.deployment.readinessprobe.scheme">
                   <el-select v-model="form.kube.deployment.readinessprobe.scheme">
                   <el-option v-for="item in ['http', 'https']" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
                 </el-form-item>
                 </template>
               <template v-if="form.kube.deployment.readinessprobe.type === 'exec'">
-                <el-form-item label="command" prop="kube.deployment.readinessprobe.command">
+                <el-form-item label="Command" prop="kube.deployment.readinessprobe.command">
                   <el-input v-model="form.kube.deployment.readinessprobe.command"></el-input>
                 </el-form-item>
               </template>
-              <el-form-item label="initialdelayseconds" prop="kube.deployment.readinessprobe.initialdelayseconds">
+              <el-form-item label="InitialDelaySeconds" prop="kube.deployment.readinessprobe.initialdelayseconds">
                 <el-input-number v-model="form.kube.deployment.readinessprobe.initialdelayseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="timeoutseconds" prop="kube.deployment.readinessprobe.timeoutseconds">
+              <el-form-item label="TimeoutSeconds" prop="kube.deployment.readinessprobe.timeoutseconds">
                 <el-input-number v-model="form.kube.deployment.readinessprobe.timeoutseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="periodseconds" prop="kube.deployment.readinessprobe.periodseconds">
+              <el-form-item label="PeriodSeconds" prop="kube.deployment.readinessprobe.periodseconds">
                 <el-input-number v-model="form.kube.deployment.readinessprobe.periodseconds" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="successthreshold" prop="kube.deployment.readinessprobe.successthreshold">
+              <el-form-item label="SuccessThreshold" prop="kube.deployment.readinessprobe.successthreshold">
                 <el-input-number v-model="form.kube.deployment.readinessprobe.successthreshold" :min="0"></el-input-number>
               </el-form-item>
-              <el-form-item label="failurethreshold" prop="kube.deployment.readinessprobe.failurethreshold">
+              <el-form-item label="FailureThreshold" prop="kube.deployment.readinessprobe.failurethreshold">
                 <el-input-number v-model="form.kube.deployment.readinessprobe.failurethreshold" :min="0"></el-input-number>
               </el-form-item>
             </template>
@@ -302,20 +302,20 @@
               </el-tooltip>
             </div>
             <template v-if="form.kube.deployment.volumemount.enabled">
-              <el-form-item label="mountpath" prop="kube.deployment.volumemount.mountpath">
+              <el-form-item label="Mount Path" prop="kube.deployment.volumemount.mountpath">
                 <el-input v-model="form.kube.deployment.volumemount.mountpath"></el-input>
               </el-form-item>
 
               <!-- PVC Settings -->
-              <el-form-item label="accessmode">
+              <el-form-item label="Access Mode">
                 <el-select v-model="form.kube.deployment.pvc.accessmode" prop="kube.deployment.pvc.accessmode">
                   <el-option v-for="item in ['ReadWriteOnce', 'ReadOnlyMany', 'ReadWriteMany']" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="storageclassname" prop="kube.deployment.pvc.storageclassname">
+              <el-form-item label="Storage Classname" prop="kube.deployment.pvc.storageclassname">
                 <el-input v-model="form.kube.deployment.pvc.storageclassname"></el-input>
               </el-form-item>
-              <el-form-item label="storagesize" prop="kube.deployment.pvc.storagesize.value">
+              <el-form-item label="Storage Size" prop="kube.deployment.pvc.storagesize.value">
                 <el-input-number v-model="form.kube.deployment.pvc.storagesize.value" :min="0"></el-input-number>
                 <el-select v-model="form.kube.deployment.pvc.storagesize.unit" style="margin-left: 15px; width: 70px;">
                   <el-option v-for="item in ['Ki', 'Mi', 'Gi']" :key="item" :label="item" :value="item"></el-option>
@@ -341,12 +341,12 @@
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item label="key" :prop="`kube.deployment.envs.${index}.key`">
+                <el-form-item label="Key" :prop="`kube.deployment.envs.${index}.key`">
                   <el-input v-model="form.kube.deployment.envs[index].key"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item label="value" :prop="`kube.deployment.envs.${index}.value`">
+                <el-form-item label="Value" :prop="`kube.deployment.envs.${index}.value`">
                   <el-input v-model="form.kube.deployment.envs[index].value"></el-input>
                 </el-form-item>
               </el-col>
@@ -362,14 +362,14 @@
             </el-tooltip>
           </div>
           <template v-if="form.kube.hpa.enabled">
-            <el-form-item label="minreplicas" prop="kube.hpa.minreplicas">
+            <el-form-item label="Min Replicas" prop="kube.hpa.minreplicas">
               <el-input-number v-model="form.kube.hpa.minreplicas" :min="1"></el-input-number>
             </el-form-item>
-            <el-form-item label="maxreplicas" prop="kube.hpa.maxreplicas">
+            <el-form-item label="Max Replicas" prop="kube.hpa.maxreplicas">
               <el-input-number v-model="form.kube.hpa.maxreplicas" :min="form.kube.hpa.minreplicas"></el-input-number>
             </el-form-item>
-            <el-form-item label="cpurate" prop="kube.hpa.cpurate">
-              <el-input-number v-model="form.kube.hpa.cpurate" :min="0"></el-input-number>
+            <el-form-item label="CPU Utilization" prop="kube.hpa.cpurate">
+              <el-input-number v-model="form.kube.hpa.cpurate" :min="0"></el-input-number>%
             </el-form-item>
           </template>
         </el-card>

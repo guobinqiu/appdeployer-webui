@@ -8,10 +8,10 @@
             <span>Default</span>
           </el-tooltip>
         </div>
-        <el-form-item label="appdir" prop="default.appdir">
+        <el-form-item label="Appdir" prop="default.appdir">
           <el-input v-model="form.default.appdir"></el-input>
         </el-form-item>
-        <el-form-item label="appname" prop="default.appname">
+        <el-form-item label="Appname" prop="default.appname">
           <el-input v-model="form.default.appname"></el-input>
         </el-form-item>
       </el-card>
@@ -24,13 +24,13 @@
           </el-tooltip>
         </div>
         <template v-if="form.git.enabled">
-          <el-form-item label="repo" prop="git.repo">
+          <el-form-item label="Repo" prop="git.repo">
             <el-input v-model="form.git.repo"></el-input>
           </el-form-item>
-          <el-form-item label="username" prop="git.username">
+          <el-form-item label="Username" prop="git.username">
             <el-input v-model="form.git.username"></el-input>
           </el-form-item>
-          <el-form-item label="password" prop="git.password">
+          <el-form-item label="Password" prop="git.password">
             <el-input v-model="form.git.password"></el-input>
           </el-form-item>
         </template>
@@ -38,35 +38,35 @@
 
       <!-- ssh -->
       <el-card>
-        <el-form-item label="username" prop="ssh.username">
+        <el-form-item label="Username" prop="ssh.username">
           <el-input v-model="form.ssh.username"></el-input>
         </el-form-item>
-        <el-form-item label="password" prop="ssh.password">
+        <el-form-item label="Password" prop="ssh.password">
           <el-input v-model="form.ssh.password"></el-input>
         </el-form-item>
-        <el-form-item label="port" prop="ssh.port">
+        <el-form-item label="Port" prop="ssh.port">
           <el-input-number v-model="form.ssh.port" :min=0 :max="65535"></el-input-number>
         </el-form-item>
-        <el-form-item label="authorized_keys_path" prop="ssh.authorized_keys_path">
+        <el-form-item label="Authorized_keys Path" prop="ssh.authorized_keys_path">
           <el-input v-model="form.ssh.authorized_keys_path"></el-input>
         </el-form-item>
-        <el-form-item label="privatekey_path" prop="ssh.privatekey_path">
+        <el-form-item label="Privatekey Path" prop="ssh.privatekey_path">
           <el-input v-model="form.ssh.privatekey_path"></el-input>
         </el-form-item>
-        <el-form-item label="publickey_path" prop="ssh.publickey_path">
+        <el-form-item label="Publickey Path" prop="ssh.publickey_path">
           <el-input v-model="form.ssh.publickey_path"></el-input>
         </el-form-item>
-        <el-form-item label="knownhosts_path" prop="ssh.knownhosts_path">
+        <el-form-item label="Knownhosts Path" prop="ssh.knownhosts_path">
           <el-input v-model="form.ssh.knownhosts_path"></el-input>
         </el-form-item>
-        <el-form-item label="stricthostkeychecking" prop="ssh.stricthostkeychecking">
+        <el-form-item label="StrictHostKeyChecking" prop="ssh.stricthostkeychecking">
           <el-checkbox v-model="form.ssh.stricthostkeychecking"></el-checkbox>
         </el-form-item>
       </el-card>
 
       <!-- ansible -->
       <el-card>
-        <el-form-item label="hosts">
+        <el-form-item label="Hosts">
           <el-button type="primary" @click="addHost" size="mini">+</el-button>
         </el-form-item>
         <el-row :gutter="20" v-for="(_, index) in form.ansible.hosts" :key=index>
@@ -76,21 +76,21 @@
             </el-form-item>
           </el-col>
           <el-col :span="20">
-            <el-form-item label="host" :prop="`ansible.hosts.${index}.value`">
+            <el-form-item label="Host" :prop="`ansible.hosts.${index}.value`">
               <el-input v-model="form.ansible.hosts[index].value"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-form-item label="role" prop="ansible.role">
+        <el-form-item label="Role" prop="ansible.role">
           <el-select v-model="form.ansible.role">
             <el-option v-for="item in ['go', 'java', 'nodejs']" :key="item" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="become_password" prop="ansible.become_password">
+        <el-form-item label="Sudo password" prop="ansible.become_password">
           <el-input v-model="form.ansible.become_password"></el-input>
         </el-form-item>
-        <el-form-item label="installdir" prop="ansible.installdir">
+        <el-form-item label="Install Dir" prop="ansible.installdir">
           <el-input v-model="form.ansible.installdir"></el-input>
         </el-form-item>
       </el-card>

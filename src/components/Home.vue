@@ -3,8 +3,7 @@
 
     <el-header>
       <div>
-        <img src="../assets/logo.png" alt="">
-        <span>AppDeployer</span>
+        <span>AppDeployer Dashboard</span>
       </div>
     </el-header>
 
